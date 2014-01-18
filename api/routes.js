@@ -1,5 +1,6 @@
 var request = require('request')
   , Promise = require('bluebird')
+  , _ = require('lodash');
 
 var get = Promise.promisify(request.get)
 
@@ -84,7 +85,10 @@ module.exports = function(app) {
       , wundergroundQueryUrl = 'http://autocomplete.wunderground.com/aq?query=' + term;
 
     get(wundergroundQueryUrl).then(function(response) {
-      searchResults.send(response);
+      var parsedData = JSON.parse(response[1])
+        , results = _.filter(parsedData.RESULTS, {'type': 'city'})
+
+      searchResults.send(results);
     })
 
   });

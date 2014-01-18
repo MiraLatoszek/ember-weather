@@ -4,19 +4,23 @@ export default Ember.Component.extend({
   classNames: ['row', 'search'],
   searchTerm: null,
   name: 'name',
-  results: ['dave'],
+  results: [],
 
   triggerSearch: function (data) {
     var _this = this;
-    this.$('input').typeahead({
-      name: "typeahead",
-      local: data.map(function(item) {
+    var r = this.get('results');
+    var d = r.map(function(item) {
         return {
           value: item.name,
           name: item.name,
+          tokens: [item.name],
           emberObject: item
         };
-      })
+      });
+    window.console.log('d %o', d);
+    this.$('input').typeahead({
+      name: "typeahead",
+      local: d
     });
   }.on('didInsertElement'),
 
@@ -30,48 +34,53 @@ export default Ember.Component.extend({
 
   }.observes('searchTerm'),
 
-  // triggerTypeahead: function() {
-  //   var _this = this,
-  //       r = [],
-  //       data = this.get('results');
-
-  //   r =  data.map(function(item) {
-  //     return {
-  //       value: item.name,
-  //       name: item.name,
-  //       emberObject: item
-  //     };
-  //   });
-  //   window.console.log('results %o', r);
-  // }.observes('results'),
-
-  initializeTypeahead: function(data){
+  triggerTypeahead: function() {
     var _this = this;
-    this.typeahead = this.$().typeahead({
-      name: "typeahead",
-      limit: this.get("limit") || 5,
-      local: data.map(function(item) {
+    var r = this.get('results');
+    var d = r.map(function(item) {
         return {
-          value: item.get("name"),
-          name: item.get("name"),
-          tokens: [item.get("name")],
+          value: item.name,
+          name: item.name,
+          tokens: [item.name],
           emberObject: item
         };
-      })
+      });
+    window.console.log('d %o', d);
+    this.$('input').typeahead({
+      name: "typeahead",
+      local: d
     });
-
-    this.typeahead.on("typeahead:selected", function(event, item) {
-      _this.set("selection", item.emberObject);
-    });
-
-    this.typeahead.on("typeahead:autocompleted", function(event, item) {
-      _this.set("selection", item.emberObject);
-    });
-
-    if (this.get("selection")) {
-      this.typeahead.val(this.get("selection.name"));
-    }
   }.observes('results'),
+
+  // initializeTypeahead: function(){
+  //   var _this = this;
+  //   var data = this.get('results');
+  //   debugger;
+  //   this.typeahead = this.$().typeahead({
+  //     name: "typeahead",
+  //     limit: this.get("limit") || 5,
+  //     local: data.map(function(item) {
+  //       return {
+  //         value: item.name,
+  //         name: item.name,
+  //         tokens: [item.name],
+  //         emberObject: item
+  //       };
+  //     })
+  //   });
+
+  //   this.typeahead.on("typeahead:selected", function(event, item) {
+  //     _this.set("selection", item.emberObject);
+  //   });
+
+  //   this.typeahead.on("typeahead:autocompleted", function(event, item) {
+  //     _this.set("selection", item.emberObject);
+  //   });
+
+  //   if (this.get("selection")) {
+  //     this.typeahead.val(this.get("selection.name"));
+  //   }
+  // }.observes('results'),
 
 
   // openResults: function() {

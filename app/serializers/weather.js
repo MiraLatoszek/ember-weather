@@ -4,7 +4,7 @@ export default DS.JSONSerializer.extend({
     var weatherConditions = payload.weatherConditions.current_observation,
         weatherForecastDay = payload.weatherForecast.forecast.simpleforecast.forecastday,
         imageApi = payload.imageApi.photos,
-        location = payload.location;
+        title = payload.location;
 
     // TODO: map
     var days = [];
@@ -20,11 +20,11 @@ export default DS.JSONSerializer.extend({
         };
 
     var ret = {
-      id: location.split(", ").join('-').toLowerCase(),
+      id: title.split(", ").join('-').toLowerCase(),
       weather: Ember.merge(weather, weatherConditions),
       days: days,
       image: imageApi[0],
-      location: location,
+      title: title,
       searchField: payload.searchField
     };
 

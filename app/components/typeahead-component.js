@@ -1,57 +1,30 @@
-var TypeAheadComponent = Ember.TextField.extend({
+import getJSON from "appkit/utils/get-json";
 
-  didInsertElement: function() {
+var TypeAheadComponent = Ember.Component.extend({
+  searchTerm: null,
+
+  setUpTypeahead: function() {
     this._super();
     var _this = this;
+    var input = this.$('input');
 
-    if(!this.get("data")){
-      throw "No data property set";
-    }
-
-    if ($.isFunction(this.get("data").then)){
-      this.get("data").then(function(data) {
-        _this.initializeTypeahead(data);
-      });
-    }
-
-    else{
-      this.initializeTypeahead(this.get("data"));
-    }
-
-  },
-
-  initializeTypeahead: function(data){
-    var _this = this;
-    this.typeahead = this.$().typeahead({
-      name: "typeahead",
-      limit: this.get("limit") || 5,
-      local: data.map(function(item) {
-        return {
-          value: item.get(_this.get("name")),
-          name: item.get(_this.get("name")),
-          tokens: [item.get(_this.get("name"))],
-          emberObject: item
-        };
-      })
+    this.typeahead = input.typeahead({
+      name: 'searchTerm',
+      valueKey: 'name',
+      remote: '/api/search/%QUERY'
     });
 
     this.typeahead.on("typeahead:selected", function(event, item) {
-      _this.set("selection", item.emberObject);
+      window.console.log('item %o', item.name);
+      _this.sendAction("searchMessage", item.name);
     });
 
     this.typeahead.on("typeahead:autocompleted", function(event, item) {
-      _this.set("selection", item.emberObject);
+      window.console.log('item2 %o', item.name);
+      _this.set("selection", item.name);
     });
-
-    if (this.get("selection")) {
-      this.typeahead.val(this.get("selection.name"));
-    }
-  },
-
-  selectionObserver: function() {
-    return this.typeahead.val(this.get("selection").get(this.get("name")));
-  }.observes("selection")
+  }.on('didInsertElement')
 
 });
 
-export default Ember.TypeAheadComponent;
+export default TypeAheadComponent;

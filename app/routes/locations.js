@@ -13,7 +13,7 @@ export default Ember.Route.extend({
 
       var createdLocation = this.store.createRecord('location', {
         id: id,
-        location: weather.get('location'),
+        location: weather.get('title'),
         searchField: weather.get('searchField'),
         weather: weather
       });
