@@ -3,13 +3,13 @@ import googleGeoLocations from "appkit/utils/google_geolocation";
 export default Ember.Route.extend({
 
   model: function(){
-    return this.store.find('location');
+    return this.store.findAll('location');
   },
 
   actions: {
     handleSaveLocation: function(weather){
 
-      var id = weather.get('location').split(", ").join('-').toLowerCase();
+      var id = weather.get('title').split(", ").join('-').toLowerCase();
 
       var createdLocation = this.store.createRecord('location', {
         id: id,
