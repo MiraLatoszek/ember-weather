@@ -1,7 +1,8 @@
 {{typeahead-component name='name' searchMessage="searchHandler"}}
 
-{{!-- {{search-button   searchMessage="searchHandler"
-                  searchTerm=searchTerm}}
- --}}
+isSavedWeather {{isSavedWeather}}
 {{weather-current weather=model
-                  saveLocationHandler="handleSaveLocation"}}
+                  saved=isSavedWeather
+                  locations=locations
+                  saveLocationHandler="saveLocation"
+                  removeLocationHandler="removeLocation"}}

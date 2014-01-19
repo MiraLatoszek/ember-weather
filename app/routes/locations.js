@@ -9,7 +9,7 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    handleSaveLocation: function(weather){
+    saveLocation: function(weather){
 
       var id = weather.get('title').split(", ").join('-').toLowerCase();
 
@@ -21,6 +21,14 @@ export default Ember.Route.extend({
       });
 
       createdLocation.save();
+    },
+
+    removeLocation: function(weather){
+      var locations = this.controllerFor('locations'),
+          locationToBeRemoved = locations.findProperty('id', weather.id);
+
+      locationToBeRemoved.deleteRecord();
+      locationToBeRemoved.save();
     },
 
     handleTransition: function(location){

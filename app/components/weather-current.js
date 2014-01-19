@@ -10,9 +10,16 @@ export default Ember.Component.extend({
     this._setImageBackGround(this.get('weather.imageLarge'));
   }.observes('weather.imageLarge'),
 
+  // dd: function(){
+  //   alert('dave');
+  // }.observes('locations.@each.id'),
+
   actions: {
     saveLocation: function (location) {
       this.sendAction('saveLocationHandler', location);
+    },
+    removeLocation: function (location) {
+      this.sendAction('removeLocationHandler', location);
     }
   },
 
