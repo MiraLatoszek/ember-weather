@@ -3,9 +3,7 @@ import googleGeoLocations from "appkit/utils/google_geolocation";
 export default Ember.Route.extend({
 
   model: function(){
-    var model =  this.store.find('location');
-    window.console.log('the location model is %o' + model.get('length'));
-    return model;
+    return this.store.find('location');
   },
 
   actions: {

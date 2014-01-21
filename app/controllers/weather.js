@@ -4,22 +4,15 @@ var WeatherController = Ember.ObjectController.extend({
 
   locations: Ember.computed.alias('controllers.locations'),
 
-  isSavedWeather: function(){
-    if (this.get('locations').filterProperty('id', this.get('id')).length >= 1){
-      return true;
-    } else {
-      return false;
-    }
-  }.property('id'),
+  isSavedWeather: false,
 
-  locationUpdated: function() {
-    if (this.get('locations').filterProperty('id', this.get('id')).length >= 1) {
+  savedLocations: function(){
+    if (this.get('locations').filterProperty('id', this.get('id')).length > 0){
       this.set('isSavedWeather', true);
     } else {
       this.set('isSavedWeather', false);
     }
-  }.observes('locations.@each.id')
-
+  }.observes('id', 'locations.@each.id')
 });
 
 export default WeatherController;
